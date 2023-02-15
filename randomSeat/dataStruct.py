@@ -14,27 +14,39 @@ class Attitude(str, Enum):
     dislike = 'dislike'
 
 
-class Surround(BaseModel):
-    attitude: Attitude
+class Relevant(BaseModel):
+    pos: list[tuple[int,int]] | str
     name: str
-    relevant_pos: list[tuple[int,int]] | str
+    attitude: Attitude
+    probability: float
 
-    @validator('relevant_pos')
+    @validator('pos')
     def checkRelevantPosFormat(cls, v):
         match v:
             case 'deskmate':
                 return [(-1,0), (1,0)]
             case str():
                 raise Exception('不能填入此字符串<{v}>')
-            case list():
-                return v
             case _:
-                raise Exception('未知的问题')
+                return v
+
+class Absoutle(BaseModel):
+    pos: list[tuple[int,int]] | str
+    attitude: Attitude
+    probability: float
+
+    @validator('pos')
+    def checkRelevantPosFormat(cls, v):
+        match v:
+            case str():
+                raise Exception('不能填入此字符串<{v}>')
+            case _:
+                return v
             
 
 class Preference(BaseModel):
-    surround: Optional[list[Surround]]
-    # location: Optional[list[Location]]
+    relevant: Optional[list[Relevant]]
+    absoutle: Optional[list[Absoutle]]
 
 
 class Person(BaseModel):
