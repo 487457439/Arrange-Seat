@@ -1,8 +1,13 @@
 from loguru import logger
 
 from enum import Enum
-from pydantic import BaseModel, Extra, validator
+from pydantic import BaseModel as PydanticBaseModel
+from pydantic import Extra, validator
 from typing import Any, Optional
+
+class BaseModel(PydanticBaseModel):
+    class Config:
+        use_enum_values = True
 
 class Gender(str, Enum):
     male = 'male'
@@ -18,7 +23,7 @@ class Relevant(BaseModel):
     pos: list[tuple[int,int]] | str
     name: str
     attitude: Attitude
-    probability: float
+    probability: float = 1
 
     @validator('pos')
     def checkRelevantPosFormat(cls, v):
@@ -33,7 +38,7 @@ class Relevant(BaseModel):
 class Absoutle(BaseModel):
     pos: list[tuple[int,int]] | str
     attitude: Attitude
-    probability: float
+    probability: float = 1
 
     @validator('pos')
     def checkRelevantPosFormat(cls, v):
@@ -53,5 +58,3 @@ class Person(BaseModel):
     name: str
     gender: Optional[Gender]
     preference: Optional[Preference]
-    class Config:
-        use_enum_values = True
