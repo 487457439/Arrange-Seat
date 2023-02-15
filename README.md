@@ -1,6 +1,6 @@
 <div align="center">
 
-# random seat
+# Arrage Seat
 
 *正在开发*
 
