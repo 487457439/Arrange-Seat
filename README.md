@@ -7,8 +7,6 @@
 
 <div align="center">
 
-# nonebot-plugin-bing-chat
-
-# 在写了在写了
+# **在写了在写了**
 
 </div>
