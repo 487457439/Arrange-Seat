@@ -20,12 +20,12 @@ class Attitude(str, Enum):
 
 
 class Relevant(BaseModel):
-    pos: list[tuple[int,int]] | str
+    pos: list[tuple[int,int]]
     name: str
     attitude: Attitude
     probability: float = 1
 
-    @validator('pos')
+    @validator('pos', pre=True)
     def checkRelevantPosFormat(cls, v):
         match v:
             case 'deskmate':
