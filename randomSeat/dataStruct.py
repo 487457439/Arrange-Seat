@@ -5,9 +5,17 @@ from pydantic import BaseModel as PydanticBaseModel
 from pydantic import Extra, validator
 from typing import Any, Optional
 
+
 class BaseModel(PydanticBaseModel):
     class Config:
         use_enum_values = True
+
+    def __repr__(self) -> str:
+        return f'<{super().__repr__()}>'
+
+    def __str__(self) -> str:
+        return super().__str__()
+
 
 class Gender(str, Enum):
     male = 'male'
@@ -20,7 +28,7 @@ class Attitude(str, Enum):
 
 
 class Relevant(BaseModel):
-    pos: list[tuple[int,int]]
+    pos: list[tuple[int, int]]
     name: str
     attitude: Attitude
     probability: float = 1
@@ -29,14 +37,15 @@ class Relevant(BaseModel):
     def checkRelevantPosFormat(cls, v):
         match v:
             case 'deskmate':
-                return [(-1,0), (1,0)]
+                return [(-1, 0), (1, 0)]
             case str():
                 raise Exception('不能填入此字符串<{v}>')
             case _:
                 return v
 
+
 class Absoutle(BaseModel):
-    pos: list[tuple[int,int]] | str
+    pos: list[tuple[int, int]] | str
     attitude: Attitude
     probability: float = 1
 
@@ -47,7 +56,7 @@ class Absoutle(BaseModel):
                 raise Exception('不能填入此字符串<{v}>')
             case _:
                 return v
-            
+
 
 class Preference(BaseModel):
     relevant: Optional[list[Relevant]]

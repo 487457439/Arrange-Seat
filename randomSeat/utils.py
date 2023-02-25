@@ -1,22 +1,17 @@
+from typing import Optional, Generator
+
 from .dataStruct import *
 
-class SeatArragement:
-    def __init__(self,  seat_format: str) -> None:
-        seat_chart = []
-        for i in seat_format.split('\n'):
-            seat_chart.append([Aisle() if j==' ' else Seat() for j in i])
-        self.seat_chart: list[list[Seat|Aisle]] = seat_chart
-
-    def __repr__(self) -> str:
-        return f''
-            
 
 class Seat:
     def __init__(self) -> None:
-        pass
+        self.seater: Optional[Person] = None
 
     def __repr__(self) -> str:
-        return f'<Seat()>'
+        return f'<Seat(seater={self.seater})>'
+
+    def __str__(self) -> str:
+        return f'{self.seater}'
 
 
 class Aisle:
@@ -26,6 +21,57 @@ class Aisle:
     def __repr__(self) -> str:
         return f'<Aisle()>'
 
+    def __str__(self) -> str:
+        return f' '
 
 
+class SeatingChart:
+    def __init__(self, config) -> None:
+        """从congfig文件中，初始化座位图
 
+        关键字参数:
+        config --
+        """
+        seat_format = config['seat chart']
+        # 初始化座位图
+        seat_chart = []
+        for i in seat_format.split('\n'):
+            seat_chart.append([Aisle() if j == ' ' else Seat() for j in i])
+        self.chart: list[list[Seat | Aisle]] = seat_chart
+
+        # 初始化座位图的行列长度
+        self.raw_len = len(self.chart[0][0])
+        self.line_len = len(self.chart[0])
+        # ToDo:检测座位图是否合法(必须是矩形)
+        pass
+
+    def __repr__(self) -> str:
+        return f'<SeatingChart(...)>'
+
+    def __str__(self) -> str:
+        lines = []
+        for row in self.chart:
+            lines.append(
+                f'{"".join(str(i) if isinstance(i,Seat) else " " for i in row)}'
+            )
+
+    def __iter__(self):
+        return iter(self.chart)
+
+    def __getitem__(self, index):
+        return self.chart[index]
+
+    def rawGenerator(self) -> Generator:
+        return (i for i in self.chart)
+
+    def lineGenerator(self) -> Generator:
+        for i in range(len(self.chart[0])):
+            yield [j[i] for j in self.chart]
+
+    @property
+    def row(self) -> list[Seat | Aisle]:
+        return list(self.rawGenerator())
+
+    @property
+    def line(self) -> list[Seat | Aisle]:
+        return list(self.lineGenerator())
