@@ -52,8 +52,9 @@ class SeatingChart:
         lines = []
         for row in self.chart:
             lines.append(
-                f'{"".join(str(i) if isinstance(i,Seat) else " " for i in row)}'
+                ''.join(str(i) if isinstance(i,Seat) else ' ' for i in row)
             )
+        return ''.join(lines)
 
     def __iter__(self):
         return iter(self.chart)
