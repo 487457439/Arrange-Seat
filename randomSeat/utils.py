@@ -3,6 +3,25 @@ from typing import Optional, Generator
 from .dataStruct import *
 
 
+    def __repr__(self) -> str:
+        return ''
+    
+    def __str__(self) -> str:
+        namelist = []
+        seat_chart = ''
+        for line in self.seat_chart :
+            namelist.append([seat.person.name if isinstance(seat,Seat) else None for seat in line ])
+        for line in namelist :
+            for name in line :
+                if name :
+                    seat_chart += '[{:<3d}]'.format(name)
+                else :
+                    seat_chart += '     '
+                seat_chart += '\n'
+
+
+        return seat_chart
+
 class Seat:
     def __init__(self) -> None:
         self.seater: Optional[Person] = None
@@ -16,7 +35,7 @@ class Seat:
 
 class Aisle:
     def __init__(self) -> None:
-        pass
+        ...
 
     def __repr__(self) -> str:
         return f'<Aisle()>'
