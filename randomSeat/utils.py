@@ -3,25 +3,6 @@ from typing import Optional, Generator
 from .dataStruct import *
 
 
-    def __repr__(self) -> str:
-        return ''
-    
-    def __str__(self) -> str:
-        namelist = []
-        seat_chart = ''
-        for line in self.seat_chart :
-            namelist.append([seat.person.name if isinstance(seat,Seat) else None for seat in line ])
-        for line in namelist :
-            for name in line :
-                if name :
-                    seat_chart += '[{:<3d}]'.format(name)
-                else :
-                    seat_chart += '     '
-                seat_chart += '\n'
-
-
-        return seat_chart
-
 class Seat:
     def __init__(self) -> None:
         self.seater: Optional[Person] = None
@@ -30,7 +11,7 @@ class Seat:
         return f'<Seat(seater={self.seater})>'
 
     def __str__(self) -> str:
-        return f'{self.seater}'
+        return f'{str(self.seater)}'
 
 
 class Aisle:
@@ -71,7 +52,7 @@ class SeatingChart:
         lines = []
         for row in self.chart:
             lines.append(
-                ''.join(str(i) if isinstance(i,Seat) else ' ' for i in row)
+                ''.join(self._nameFormat(str(i)) if isinstance(i,Seat) else ' ' for i in row)
             )
         return ''.join(lines)
 
@@ -87,6 +68,12 @@ class SeatingChart:
     def lineGenerator(self) -> Generator:
         for i in range(len(self.chart[0])):
             yield [j[i] for j in self.chart]
+
+    def _nameFormat(self,name:str) -> str:
+        if len(name) == 2:
+            return ' {}.format(name) '
+        else:
+            return name[0:3]
 
     @property
     def row(self) -> list[Seat | Aisle]:
