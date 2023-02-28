@@ -5,7 +5,7 @@ from .dataStruct import *
 
 class Seat:
     def __init__(self) -> None:
-        self.seater: Optional[Person] = None
+        self.seater: Optional[Person] = Person(name = 'None') # TODO
 
     def __repr__(self) -> str:
         return f'<Seat(seater={self.seater})>'
@@ -40,8 +40,8 @@ class SeatingChart:
         self.chart: list[list[Seat | Aisle]] = seat_chart
 
         # 初始化座位图的行列长度
-        self.raw_len = len(self.chart[0][0])
-        self.line_len = len(self.chart[0])
+        self.row_len = len(self.chart[0])
+        self.line_len = len(self.chart)
         # ToDo:检测座位图是否合法(必须是矩形)
         pass
 
@@ -52,8 +52,9 @@ class SeatingChart:
         lines = []
         for row in self.chart:
             lines.append(
-                ''.join(self._nameFormat(str(i)) if isinstance(i,Seat) else ' ' for i in row)
+                ''.join(self._nameFormat(i.seater.name) if isinstance(i,Seat) else ' ' for i in row)
             )
+            lines.append('\n')
         return ''.join(lines)
 
     def __iter__(self):
@@ -70,10 +71,11 @@ class SeatingChart:
             yield [j[i] for j in self.chart]
 
     def _nameFormat(self,name:str) -> str:
-        if len(name) == 2:
-            return ' {}.format(name) '
+        if len(name) <= 2:
+            return f'[ {name} ]'
         else:
-            return name[0:3]
+            return f'[{name[0:3]}]'
+
 
     @property
     def row(self) -> list[Seat | Aisle]:
