@@ -5,7 +5,7 @@ from .dataStruct import *
 
 class Seat:
     def __init__(self) -> None:
-        self.seater: Optional[Person] = Person(name = 'None')
+        self.seater: Optional[Person] = Person(name = 'None') # TODO
 
     def __repr__(self) -> str:
         return f'<Seat(seater={self.seater})>'
