@@ -76,6 +76,7 @@ class SeatingChart:
         else:
             return f'[{name[0:3]}]'
 
+
     @property
     def row(self) -> list[Seat | Aisle]:
         return list(self.rawGenerator())
