@@ -104,7 +104,6 @@ class SeatingChart:
             seats.append(line)
         return seats
 
-
     @property
     def row(self) -> list[Seat | Aisle]:
         return list(self.rawGenerator())
