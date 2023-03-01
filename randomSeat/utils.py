@@ -5,7 +5,7 @@ from .dataStruct import *
 
 class Seat:
     def __init__(self) -> None:
-        self.seater: Optional[Person] = Person(name = 'None') # TODO
+        self.seater: Optional[Person] = Person(name='None')  # TODO
 
     def __repr__(self) -> str:
         return f'<Seat(seater={self.seater})>'
@@ -52,7 +52,10 @@ class SeatingChart:
         lines = []
         for row in self.chart:
             lines.append(
-                ''.join(self._nameFormat(i.seater.name) if isinstance(i,Seat) else ' ' for i in row)
+                ''.join(
+                    self._nameFormat(i.seater.name) if isinstance(i, Seat) else ' '
+                    for i in row
+                )
             )
             lines.append('\n')
         return ''.join(lines)
@@ -70,12 +73,11 @@ class SeatingChart:
         for i in range(len(self.chart[0])):
             yield [j[i] for j in self.chart]
 
-    def _nameFormat(self,name:str) -> str:
+    def _nameFormat(self, name: str) -> str:
         if len(name) <= 2:
             return f'[ {name} ]'
         else:
             return f'[{name[0:3]}]'
-
 
     @property
     def row(self) -> list[Seat | Aisle]:
